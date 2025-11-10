@@ -1,5 +1,5 @@
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cors = require("cors");
 const app = express();
 const port = 3000;
@@ -31,6 +31,18 @@ async function run() {
     app.get("/bills", async (req, res) => {
       const result = await modelcollection.find().limit(6).toArray();
       res.send(result);
+    });
+
+    app.get("/allbills/:id", async (req, res) => {
+      const { id } = req.params;
+      const objectId = new ObjectId(id);
+
+      const result = await modelcollection.findOne({ _id: objectId });
+
+      res.send({
+        success: true,
+        result,
+      });
     });
 
     app.get("/bills/filter", async (req, res) => {
