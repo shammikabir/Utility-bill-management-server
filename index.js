@@ -22,11 +22,36 @@ async function run() {
   try {
     await client.connect();
     const db = client.db("model-db");
-    const modelcollection = db.collection("models");
+    const modelcollection = db.collection("bills");
 
-    app.get("/models", async (req, res) => {
+    app.get("/allbills", async (req, res) => {
       const result = await modelcollection.find().toArray();
       res.send(result);
+    });
+    app.get("/bills", async (req, res) => {
+      const result = await modelcollection.find().limit(6).toArray();
+      res.send(result);
+    });
+
+    app.get("/bills/filter", async (req, res) => {
+      try {
+        const category = req.query.category; // URL theke category nilam
+
+        let filter = {}; // empty filter object
+
+        // jodi category thake, tahole filter e set korlam
+        if (category) {
+          filter.category = category;
+        }
+
+        // MongoDB theke oi category er bills gula niye aslam
+        const result = await modelcollection.find(filter).toArray();
+
+        res.send(result); // frontend e data pathailam
+      } catch (error) {
+        console.log("Filter error:", error);
+        res.status(500).send({ message: "Something went wrong!" });
+      }
     });
 
     console.log("Connected to MongoDB!");
