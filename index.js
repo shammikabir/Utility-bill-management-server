@@ -68,7 +68,7 @@ async function run() {
       res.send({ success: true, result });
     });
 
-    // ✅ Update bill by ID (FINAL)
+    // Update bill by ID
     app.put("/myBills/:id", async (req, res) => {
       const { id } = req.params;
       const data = req.body;
