@@ -79,7 +79,7 @@ async function run() {
       res.send({ success: true, result });
     });
 
-    //  DELETE → Delete bill by ID
+    //  DELETE  Delete bill by ID
     app.delete("/myBills/:id", async (req, res) => {
       const { id } = req.params;
       const result = await myBillsCollection.deleteOne({
