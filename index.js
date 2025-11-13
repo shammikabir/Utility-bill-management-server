@@ -9,7 +9,7 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
-// ✅ MongoDB Connection URI
+// MongoDB Connection URI
 const uri =
   "mongodb+srv://Userdb:O8eXEB7KC9Z20Ay4@cluster0.hj4tbay.mongodb.net/model-db?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -20,7 +20,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-    console.log("✅ Connected to MongoDB Atlas");
+    console.log("Connected to MongoDB Atlas");
 
     const db = client.db("model-db");
     const modelcollection = db.collection("bills");
@@ -88,7 +88,7 @@ async function run() {
       res.send({ success: true, result });
     });
   } catch (error) {
-    console.error("❌ MongoDB connection failed:", error);
+    console.error(" MongoDB connection failed:", error);
   }
 }
 
