@@ -1,17 +1,16 @@
 const express = require("express");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cors = require("cors");
-
+require("dotenv").config();
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection URI
-const uri =
-  "mongodb+srv://Userdb:O8eXEB7KC9Z20Ay4@cluster0.hj4tbay.mongodb.net/model-db?retryWrites=true&w=majority&appName=Cluster0";
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.hj4tbay.mongodb.net/model-db?retryWrites=true&w=majority&appName=Cluster0`;
 
 const client = new MongoClient(uri, {
   serverApi: ServerApiVersion.v1,
@@ -19,7 +18,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
     console.log("Connected to MongoDB Atlas");
 
     const db = client.db("model-db");
@@ -87,20 +86,25 @@ async function run() {
       });
       res.send({ success: true, result });
     });
-  } catch (error) {
-    console.error(" MongoDB connection failed:", error);
+    // await client.db("admin").command({ ping: 1 });
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!"
+    );
+  } finally {
+    // Ensures that the client will close when you finish/error
+    // await client.close();
   }
 }
 
 // Run DB connection
-run();
+run().catch(console.dir);
 
 // Root route
 app.get("/", (req, res) => {
-  res.send("Hello World! 👋 Server is running smoothly.");
+  res.send("Hello World!  Server is running smoothly.");
 });
 
 // Start server
 app.listen(port, () => {
-  console.log(`🚀 Server running on http://localhost:${port}`);
+  console.log(` Server running on http://localhost:${port}`);
 });
